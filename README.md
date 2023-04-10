@@ -9,7 +9,6 @@ support in [Renovate]. The implementation for this project will live in the [ren
 - [Project Tracker]
 - [Design document]
 
-
 <!-- LINKS -->
 
 [Design document]: design.md
