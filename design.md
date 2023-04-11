@@ -65,7 +65,6 @@ Together, these values dictate how to identify upgrade candidates for a Bazel mo
 Bazel modules support a [relaxed SemVer specification]. Specifically, [the version documentation]
 states:
 
-
 > The version format we support is `RELEASE[-PRERELEASE][+BUILD]`, where `RELEASE`, `PRERELEASE`,
 > and `BUILD` are each a sequence of "identifiers" (defined as a non-empty sequence of ASCII
 > alphanumerical characters and hyphens) separated by dots. The `RELEASE` part may not contain
@@ -82,13 +81,28 @@ Examples of valid `version` values are listed below:
 
 #### Version Sorting
 
-To identify whether a release is an upgrade candidate for another release, we need know how to order
-the version values. The Renovate manager will implement [the same Bazel module version sort] as is
-implemented in Bazel.
+To identify whether a release is an upgrade candidate, we need know how to order the version values.
+The Renovate manager will implement [the same Bazel module version sort] as is implemented in Bazel.
 
 #### Version Selection
 
-#### Upgrarde Logic: Library vs Executable
+
+#### Simple Version Selection
+
+<!-- 
+```typescript
+const current = {compatibility_level: 1, version: "1.1.0"};
+const available = [
+    {compatibility_level: 1, version: "1.0.0"},
+    {compatibility_level: 1, version: "1.1.0"},
+    {compatibility_level: 1, version: "1.2.0"},
+    {compatibility_level: 2, version: "2.0.0"},
+];
+const expected
+```
+-->
+
+#### Upgrade Logic: Library vs Executable
 
 
 <!-- Future Sections
@@ -109,6 +123,7 @@ implemented in Bazel.
 
 - [bzlmod Version.java]
 - [bzlmod VersionTest.java]
+- [bzlmod Selection.java]
 - [Slack discussion about library vs executable repositories]
 
 <!-- LINKS -->
@@ -126,9 +141,10 @@ implemented in Bazel.
 [bazel_dep]: https://bazel.build/rules/lib/globals#bazel_dep
 [bzlmod Version.java]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java
 [bzlmod VersionTest.java]: https://cs.opensource.google/bazel/bazel/+/master:src/test/java/com/google/devtools/build/lib/bazel/bzlmod/VersionTest.java
+[bzlmod Selection.java]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Selection.java
 [compatibility level]: https://bazel.build/external/module#compatibility_level
 [currently supports]: https://github.com/renovatebot/renovate/tree/main/lib/modules/manager/bazel
 [relaxed SemVer specification]: https://bazel.build/external/module#version_format
-[yanked versions]:https://bazel.build/external/module#yanked_versions
-[the version documentation]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java;l=34-37;bpv=0;bpt=1
 [the same Bazel module version sort]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java
+[the version documentation]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java;l=34-37;bpv=0;bpt=1
+[yanked versions]:https://bazel.build/external/module#yanked_versions
