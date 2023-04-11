@@ -12,7 +12,6 @@ created: 2023-04-10
 Bazel dependencies described in [WORKSPACE-managed repositories]. With the introduction of [Bazel
 modules], [Renovate] needs to be modified to support the new external dependency mechanism.
 
-
 ## Requirements
 
 - Support extracting external dependency information from `MODULE.bazel` files.
@@ -32,6 +31,8 @@ modules], [Renovate] needs to be modified to support the new external dependency
   - [Multiple version override]
   - [Non-registry overrides]
 
+<!-- Future Sections
+
 ## Design
 
 The following sections describe 
@@ -43,9 +44,6 @@ The following sections describe
 #### Resolution: Library vs Executable
 
 [Related Slack discussion](https://bazelbuild.slack.com/archives/C014RARENH0/p1674838476782969)
-
-
-<!-- Future Sections
 
 ### New Module Version Detection
 
