@@ -16,6 +16,10 @@ modules], [Renovate] needs to be modified to support the new external dependency
 
 - Support extracting external dependency information from `MODULE.bazel` files.
   - Read external dependency information from [bazel_dep] declarations.
+  - Support module overrides.
+    - [Single version override]
+    - [Multiple version override]
+    - [Non-registry overrides]
 - Detect new module versions when they are introduced to a module registry (e.g., [Bazel Central
   Registry]).
   - Triggering updates based upon GitHub releases is problematic as the update to a registry is a
@@ -26,10 +30,6 @@ modules], [Renovate] needs to be modified to support the new external dependency
   - Support [yanked versions]. A version can be yanked by a maintainer when it should be avoided.
   - Support different version resolution logic for libraries (i.e., is depended upon by other
     projects) vs executable (i.e., is not depdended upon by other projects) repositories .
-- Support module overrides.
-  - [Single version override]
-  - [Multiple version override]
-  - [Non-registry overrides]
 
 <!-- Future Sections
 
