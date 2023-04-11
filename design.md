@@ -52,13 +52,75 @@ modules], [Renovate] needs to be modified to support the new external dependency
 
 ## Design
 
-The following sections describe 
-
 ### Versioning
 
-#### Parsing and Sorting
+Versioning for Bazel modules has two components: the `version` string and the `compatibility_level`
+integer. The `version` string has two roles. First, it identifies a unique release for a Bazel
+module. Second, it acts as a sort field aiding in the ordering of releases. The
+`compatibility_level` groups releases identifying those which are compatible with each other.
+Together, these values dictate how to identify upgrade candidates for a Bazel module.
 
-#### Resolution: Library vs Executable
+#### Version Formats
+
+Bazel modules support a [relaxed SemVer specification]. Examples of valid `version` values are
+listed below:
+
+```sh
+1.2.3                 # SemVer
+7.0.0-pre.20230330.3  # SemVer with suffix
+foo_1.2.3             # Non-digit characters in SemVer
+20230125.2            # Date-patch format
+```
+
+The one constant in the formats is that the period (`.`) separates the parts of a version value. For
+the purposes of sorting, this will be important as the sort will occur by comparing the parts of the
+version values.
+
+#### Version Sorting
+
+To identify whether a release is an upgrade candidate for another release, we need to sort the
+version values. This will be done by splitting version values into parts identified by period (`.`)
+characters. Each part will be sorted based upon the type of values found in that part across the
+entire collection of version values. A part that only contains digits (`[0-9]`) will be sorted by
+number. Otherwise, the part will be sorted in alphanumeric order.
+
+Let's look at an example. The following represents an unordered collection of version values for a
+Bazel module.
+
+```sh
+# Unordered list of version values
+6.2.0
+7.0.0-pre.20230330.3
+6.3.0
+6.2.1
+```
+
+We need to sort this list such that the result is:
+
+```sh
+# Ordered list of version values
+6.2.0
+6.2.1
+6.3.0
+7.0.0-pre.20230330.3
+```
+
+First, we need to identify the maximum number of parts for a version value across the entire
+collection. In this case, the maximum number of parts is five as found in `7.0.0-pre.20230330.3`.
+
+Next, we need to identify the value type for each part.
+
+| Part | Type | Values |
+| ---- | ---- | ------ |
+| 0 | numeric | `6, 7` |
+| 1 | numeric | `0, 2, 3` |
+| 2 | alphanumeric | `0, 1, 0-pre` |
+| 
+
+
+#### Version Selection
+
+#### Upgrarde Logic: Library vs Executable
 
 [Related Slack discussion](https://bazelbuild.slack.com/archives/C014RARENH0/p1674838476782969)
 
@@ -91,3 +153,4 @@ The following sections describe
 [compatibility level]: https://bazel.build/external/module#compatibility_level
 [currently supports]: https://github.com/renovatebot/renovate/tree/main/lib/modules/manager/bazel
 [yanked versions]:https://bazel.build/external/module#yanked_versions
+[relaxed SemVer specification]: https://bazel.build/external/module#version_format
