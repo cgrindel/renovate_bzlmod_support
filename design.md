@@ -2,7 +2,7 @@
 
 ```yaml
 author: Chuck Grindel<chuck.grindel@gmail.com>
-status: To be reviewed
+status: Under review
 created: 2023-04-10
 ```
 
@@ -49,7 +49,6 @@ modules], [Renovate] needs to be modified to support the new external dependency
   - Support different version resolution logic for libraries (i.e., is depended upon by other
     projects) vs executable (i.e., is not depdended upon by other projects) repositories .
 
-<!-- Future Sections
 
 ## Design
 
@@ -62,6 +61,8 @@ The following sections describe
 #### Resolution: Library vs Executable
 
 [Related Slack discussion](https://bazelbuild.slack.com/archives/C014RARENH0/p1674838476782969)
+
+<!-- Future Sections
 
 ### New Module Version Detection
 
