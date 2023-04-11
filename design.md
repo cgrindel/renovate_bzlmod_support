@@ -14,22 +14,32 @@ modules], [Renovate] needs to be modified to support the new external dependency
 
 ## Requirements
 
-- Support extracting external dependency information from `MODULE.bazel` files.
-  - Read external dependency information from [bazel_dep] declarations.
-  - Support module overrides.
-    - [Single version override]
-    - [Multiple version override]
-    - [Non-registry overrides]
-- Detect new module versions when they are introduced to a module registry (e.g., [Bazel Central
-  Registry]).
-  - Triggering updates based upon GitHub releases is problematic as the update to a registry is a
-    separate step that may not complete for minutes to hours (i.e., human approval of a pull
-    request).
+- External Dependency Discovery
+  - Support extracting external dependency information from `MODULE.bazel` files.
+    - Read external dependency information from [bazel_dep] declarations.
+    - Support module overrides.
+      - [Single version override]
+      - [Multiple version override]
+      - [Non-registry overrides]
+- Registry Discovery
+  - Support parsing of `.bazelrc` and files imported in the `.bazelrc` looking for [--registry]
+    flags.
+  - If no registry values are detected, default to the [Bazel Central Registry].
+- Bazel Module Release Detection
+  - Detect new module versions when they are introduced to a module registry (e.g., [Bazel Central
+    Registry]).
+    - Triggering updates based upon GitHub releases is problematic as the update to a registry is a
+      separate step that may not complete for minutes to hours (i.e., human approval of a pull
+      request).
 - Versioning
   - Support [Bazel module version formats] and [compatibility level].
   - Support [yanked versions]. A version can be yanked by a maintainer when it should be avoided.
   - Support different version resolution logic for libraries (i.e., is depended upon by other
     projects) vs executable (i.e., is not depdended upon by other projects) repositories .
+- Bazel Compatibility
+  - Support parsing of `.bazelversion` to detect the Bazel version.
+  - If a Bazel version is present, evaluate the `bazel_compatibility` expressions for the module
+    version to determine if it is an acceptable upgrade candidate.
 
 <!-- Future Sections
 
@@ -59,6 +69,7 @@ The following sections describe
 
 <!-- LINKS -->
 
+[--registry]: https://bazel.build/reference/command-line-reference#flag--registry
 [Bazel Central Registry]: https://github.com/bazelbuild/bazel-central-registry
 [Bazel module version formats]: https://bazel.build/external/module#version_format
 [Bazel modules]: https://bazel.build/external/module
