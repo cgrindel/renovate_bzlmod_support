@@ -62,67 +62,34 @@ Together, these values dictate how to identify upgrade candidates for a Bazel mo
 
 #### Version Formats
 
-Bazel modules support a [relaxed SemVer specification]. Examples of valid `version` values are
-listed below:
+Bazel modules support a [relaxed SemVer specification]. Specifically, [the version documentation]
+states:
+
+
+> The version format we support is `RELEASE[-PRERELEASE][+BUILD]`, where `RELEASE`, `PRERELEASE`,
+> and `BUILD` are each a sequence of "identifiers" (defined as a non-empty sequence of ASCII
+> alphanumerical characters and hyphens) separated by dots. The `RELEASE` part may not contain
+> hyphens.
+
+Examples of valid `version` values are listed below:
 
 ```sh
 1.2.3                 # SemVer
-7.0.0-pre.20230330.3  # SemVer with suffix
-foo_1.2.3             # Non-digit characters in SemVer
+7.0.0-pre.20230330.3  # SemVer with prerelease
+1.0+build2            # SemVer with two parts and a build
 20230125.2            # Date-patch format
 ```
 
-The one constant in the formats is that the period (`.`) separates the parts of a version value. For
-the purposes of sorting, this will be important as the sort will occur by comparing the parts of the
-version values.
-
 #### Version Sorting
 
-To identify whether a release is an upgrade candidate for another release, we need to sort the
-version values. This will be done by splitting version values into parts identified by period (`.`)
-characters. Each part will be sorted based upon the type of values found in that part across the
-entire collection of version values. A part that only contains digits (`[0-9]`) will be sorted by
-number. Otherwise, the part will be sorted in alphanumeric order.
-
-Let's look at an example. The following represents an unordered collection of version values for a
-Bazel module.
-
-```sh
-# Unordered list of version values
-6.2.0
-7.0.0-pre.20230330.3
-6.3.0
-6.2.1
-```
-
-We need to sort this list such that the result is:
-
-```sh
-# Ordered list of version values
-6.2.0
-6.2.1
-6.3.0
-7.0.0-pre.20230330.3
-```
-
-First, we need to identify the maximum number of parts for a version value across the entire
-collection. In this case, the maximum number of parts is five as found in `7.0.0-pre.20230330.3`.
-
-Next, we need to identify the value type for each part.
-
-| Part | Type | Values |
-| ---- | ---- | ------ |
-| 0 | numeric | `6, 7` |
-| 1 | numeric | `0, 2, 3` |
-| 2 | alphanumeric | `0, 1, 0-pre` |
-| 
-
+To identify whether a release is an upgrade candidate for another release, we need know how to order
+the version values. The Renovate manager will implement [the same Bazel module version sort] as is
+implemented in Bazel.
 
 #### Version Selection
 
 #### Upgrarde Logic: Library vs Executable
 
-[Related Slack discussion](https://bazelbuild.slack.com/archives/C014RARENH0/p1674838476782969)
 
 <!-- Future Sections
 
@@ -138,6 +105,12 @@ Next, we need to identify the value type for each part.
 
 -->
 
+## References
+
+- [bzlmod Version.java]
+- [bzlmod VersionTest.java]
+- [Slack discussion about library vs executable repositories]
+
 <!-- LINKS -->
 
 [--registry]: https://bazel.build/reference/command-line-reference#flag--registry
@@ -148,9 +121,14 @@ Next, we need to identify the value type for each part.
 [Non-registry overrides]: https://bazel.build/external/module#non-registry_overrides
 [Renovate]: https://github.com/renovatebot/renovate
 [Single version override]: https://bazel.build/external/module#single-version_override
+[Slack discussion about library vs executable repositories]: https://bazelbuild.slack.com/archives/C014RARENH0/p1674838476782969
 [WORKSPACE-managed repositories]: https://bazel.build/external/overview#workspace-system
 [bazel_dep]: https://bazel.build/rules/lib/globals#bazel_dep
+[bzlmod Version.java]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java
+[bzlmod VersionTest.java]: https://cs.opensource.google/bazel/bazel/+/master:src/test/java/com/google/devtools/build/lib/bazel/bzlmod/VersionTest.java
 [compatibility level]: https://bazel.build/external/module#compatibility_level
 [currently supports]: https://github.com/renovatebot/renovate/tree/main/lib/modules/manager/bazel
-[yanked versions]:https://bazel.build/external/module#yanked_versions
 [relaxed SemVer specification]: https://bazel.build/external/module#version_format
+[yanked versions]:https://bazel.build/external/module#yanked_versions
+[the version documentation]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java;l=34-37;bpv=0;bpt=1
+[the same Bazel module version sort]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java
