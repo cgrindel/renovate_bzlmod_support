@@ -22,9 +22,10 @@ modules], [Renovate] needs to be modified to support the new external dependency
       - [Multiple version override]
       - [Non-registry overrides]
 - Registry Discovery
-  - Support parsing of `.bazelrc` and files imported in the `.bazelrc` looking for [--registry]
-    flags.
-  - If no registry values are detected, default to the [Bazel Central Registry].
+  1. Support parsing of `.bazelrc` and files imported in the `.bazelrc` looking for [--registry]
+     flags.
+  2. If no registry values are detected, default to a Renovate configuration value. 
+  3. Otherwise, use the [Bazel Central Registry].
 - Bazel Module Release Detection
   - Detect new module versions when they are introduced to a module registry (e.g., [Bazel Central
     Registry]).
@@ -37,7 +38,10 @@ modules], [Renovate] needs to be modified to support the new external dependency
   - Support different version resolution logic for libraries (i.e., is depended upon by other
     projects) vs executable (i.e., is not depdended upon by other projects) repositories .
 - Bazel Compatibility
-  - Support parsing of `.bazelversion` to detect the Bazel version.
+  - Identify the Bazel version being used:
+    1. Support parsing of `.bazelversion` to detect the Bazel version.
+    2. Allow the Bazel version to be specified in a Renovate configuration value.
+    3. No Bazel version detected
   - If a Bazel version is present, evaluate the `bazel_compatibility` expressions for the module
     version to determine if it is an acceptable upgrade candidate.
 
