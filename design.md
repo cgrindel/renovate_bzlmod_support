@@ -86,26 +86,57 @@ The Renovate manager will implement [the same Bazel module version sort] as is i
 
 #### Version Selection
 
+For a given dependency, the Renovate manager will create an upgrade pull request for the highest
+version for a compatibility level. This implies that zero or more pull requests could be created
+depending upon the available versions for a dependency.
 
-#### Simple Version Selection
+To explore the implications of this rule, lets look at some examples. In all of the examples, the
+repository that is using Renovate has a dependency on `rules_foo` at version `1.0.0`. This version
+has a `compatibility_level` value of `1`. Renovate pull requests (PR) will be created for versions
+have a checkmark (✅).
 
-<!-- 
-```typescript
-const current = {compatibility_level: 1, version: "1.1.0"};
-const available = [
-    {compatibility_level: 1, version: "1.0.0"},
-    {compatibility_level: 1, version: "1.1.0"},
-    {compatibility_level: 1, version: "1.2.0"},
-    {compatibility_level: 2, version: "2.0.0"},
-];
-const expected
-```
--->
 
-#### Upgrade Logic: Library vs Executable
+##### Example: Single Upgrade Candidate with Same Compatibility Level
+
+| Available Versions | Compatibility Level | PR |
+| ------------------ | ------------------- |:--:|
+| `1.0.0` | `1` | |
+| `1.1.0` | `1` | ✅ |
+
+##### Example: Single Upgrade Candidate with Different Compatibility Level
+
+| Available Versions | Compatibility Level | PR |
+| ------------------ | ------------------- |:--:|
+| `1.0.0` | `1` | |
+| `2.0.0` | `2` | ✅ |
+
+##### Example: Multiple Upgrade Candidates
+
+| Available Versions | Compatibility Level | PR |
+| ------------------ | ------------------- |:--:|
+| `1.0.0` | `1` | | 
+| `1.1.0` | `1` | |
+| `1.1.1` | `1` | ✅ |
+| `2.0.0` | `2` | ✅ |
+
+In this example two pull requests are created. One for compatibility level `1` and the other for
+compatibility level `2`.
+
+##### Example: Prerelease Versions
+
+| Available Versions | Compatibility Level | PR |
+| ------------------ | ------------------- |:--:|
+| `1.0.0` | `1` | |
+| `1.1.0` | `1` | ✅ |
+| `2.0.0-pre.20230412` | `2` | |
+
+Even though there is a release with compatibility level `2`, it is ignored because it is a
+prerelease.
 
 
 <!-- Future Sections
+
+#### Upgrade Logic: Library vs Executable
 
 ### New Module Version Detection
 
