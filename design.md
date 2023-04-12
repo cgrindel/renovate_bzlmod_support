@@ -93,7 +93,7 @@ depending upon the available versions for a dependency.
 To explore the implications of this rule, lets look at some examples. In all of the examples, the
 repository that is using Renovate has a dependency on `rules_foo` at version `1.0.0`. This version
 has a `compatibility_level` value of `1`. Renovate pull requests (PR) will be created for versions
-have a checkmark (✅).
+having a checkmark (✅).
 
 
 ##### Example: Single Upgrade Candidate with Same Compatibility Level
@@ -120,7 +120,8 @@ have a checkmark (✅).
 | `2.0.0` | `2` | ✅ |
 
 In this example two pull requests are created. One for compatibility level `1` and the other for
-compatibility level `2`.
+compatibility level `2`. The `1.1.0` release is ignored because there is a higher version available
+with the same compatibility level (`1.1.1`).
 
 ##### Example: Prerelease Versions
 
