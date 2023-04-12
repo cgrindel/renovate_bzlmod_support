@@ -35,8 +35,9 @@ modules], [Renovate] needs to be modified to support the new external dependency
 - Versioning
   - Support [Bazel module version formats] and [compatibility level].
   - Support [yanked versions]. A version can be yanked by a maintainer when it should be avoided.
-  - Support different version resolution logic for libraries (i.e., is depended upon by other
-    projects) vs executable (i.e., is not depdended upon by other projects) repositories .
+
+### Requirements Still Under Discussion
+
 - Bazel Compatibility
   - Identify the Bazel version being used:
     1. Support parsing of `.bazelversion` to detect the Bazel version.
@@ -44,6 +45,9 @@ modules], [Renovate] needs to be modified to support the new external dependency
     3. No Bazel version detected
   - If a Bazel version is present, evaluate the `bazel_compatibility` expressions for the module
     version to determine if it is an acceptable upgrade candidate.
+- Different Update Rules for Ruleset/Library Repositories
+  - Support different version resolution logic for libraries (i.e., is depended upon by other
+    projects) vs executable (i.e., is not depdended upon by other projects) repositories .
 
 <!-- Future Sections
 
