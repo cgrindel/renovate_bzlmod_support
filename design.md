@@ -183,6 +183,7 @@ The default versioning scheme will be `bazel-module`, as discussed in earlier in
 [Bazel module version formats]: https://bazel.build/external/module#version_format
 [Bazel modules]: https://bazel.build/external/module
 [Bazel registries]: https://bazel.build/external/registry
+[Bazel registry]: https://bazel.build/external/registry
 [Multiple version override]: https://bazel.build/external/module#multiple-version_override
 [Non-registry overrides]: https://bazel.build/external/module#non-registry_overrides
 [Renovate]: https://github.com/renovatebot/renovate
@@ -195,13 +196,12 @@ The default versioning scheme will be `bazel-module`, as discussed in earlier in
 [bzlmod VersionTest.java]: https://cs.opensource.google/bazel/bazel/+/master:src/test/java/com/google/devtools/build/lib/bazel/bzlmod/VersionTest.java
 [compatibility level]: https://bazel.build/external/module#compatibility_level
 [currently supports]: https://github.com/renovatebot/renovate/tree/main/lib/modules/manager/bazel
+[custom registry support]: https://github.com/renovatebot/renovate/blob/main/lib/modules/datasource/types.ts#L95-L98
 [datasource in the renovate framework]: https://github.com/renovatebot/renovate/tree/main/lib/modules/datasource
+[multiple Bazel registries]: https://bazel.build/external/registry#selecting_registries
+[registry strategy]: https://github.com/renovatebot/renovate/blob/main/lib/modules/datasource/types.ts#L87-L93
 [relaxed SemVer specification]: https://bazel.build/external/module#version_format
 [the existing Renovate versioning schemes]: https://github.com/renovatebot/renovate/tree/main/lib/modules/versioning
 [the same Bazel module version sort]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java
 [the version documentation]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java;l=34-37;bpv=0;bpt=1
 [yanked versions]:https://bazel.build/external/module#yanked_versions
-[Bazel registry]: https://bazel.build/external/registry
-[custom registry support]: https://github.com/renovatebot/renovate/blob/main/lib/modules/datasource/types.ts#L95-L98
-[registry strategy]: https://github.com/renovatebot/renovate/blob/main/lib/modules/datasource/types.ts#L87-L93
-[multiple Bazel registries]: https://bazel.build/external/registry#selecting_registries
