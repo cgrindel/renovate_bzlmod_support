@@ -60,8 +60,6 @@ module. Second, it acts as a sort field aiding in the ordering of releases. The
 `compatibility_level` groups releases identifying those which are compatible with each other.
 Together, these values dictate how to identify upgrade candidates for a Bazel module.
 
-#### Version Implementation
-
 Because none of [the existing Renovate versioning schemes] satisfies the requirements for Bazel
 modules, a new versioning scheme, `bazel-module`, will be implemented. 
 
