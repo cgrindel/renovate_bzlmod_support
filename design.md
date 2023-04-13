@@ -159,23 +159,32 @@ In addition to the `bazel-registry` datasource, the [github-releases datasource]
 reconcile upgrades for Bazel modules that have a `git_override` declaration.
 
 ### Manager
+ 
+A [manager in the renovate framework] contains the code for extracting dependency information from
+repository files. This design introduces a manager, `bazel-module`, for processing Bazel module
+dependencies. Like the [`bazel` renovate manager], the `good-enough-parser`'s [Starlark language
+parser] will be used to parse a repository's `MODULE.bazel` file.
 
+The `bazel-module` manager will detect and process [bazel_dep], [archive_override], [git_override],
+[single_version_override], and [multiple_version_override].
 
-<!-- Future Sections
+#### 
 
-#### Upgrade Logic: Library vs Executable
+Any [bazel_dep] entry in a `MODULE.bazel` will be added to the list 
 
-### New Module Version Detection
+<!-- 
 
-## Implementation Details
-
-### Renovate Versioning: `bazel-module`
-
-### Renovate Datasource: `bazel-module-registry`
-
-### Renovate Package Manager: `bazel-module`
+> TODO (grindel): Use [getRangeStrategy](https://github.com/renovatebot/renovate/blob/main/docs/development/adding-a-package-manager.md#getrangestrategyconfig-optional)
+> to support the library vs executable repository strategy?
 
 -->
+
+### Other Changes
+
+#### Update the Renovate Bazel Documentation
+
+The renovate repository contains [a document related to Bazel]. This document will be updated to
+contain information about Bazel module support.
 
 ## References
 
@@ -184,6 +193,7 @@ reconcile upgrades for Bazel modules that have a `git_override` declaration.
 - [bzlmod Selection.java]
 - [Slack discussion about library vs executable repositories]
 - [Bazel registries]
+- [ManagerApi]
 
 <!-- LINKS -->
 
@@ -193,10 +203,10 @@ reconcile upgrades for Bazel modules that have a `git_override` declaration.
 [Bazel modules]: https://bazel.build/external/module
 [Bazel registries]: https://bazel.build/external/registry
 [Bazel registry]: https://bazel.build/external/registry
-[Multiple version override]: https://bazel.build/external/module#multiple-version_override
+[Multiple version override]: https://bazel.build/external/module#multiple_version_override
 [Non-registry overrides]: https://bazel.build/external/module#non-registry_overrides
 [Renovate]: https://github.com/renovatebot/renovate
-[Single version override]: https://bazel.build/external/module#single-version_override
+[Single version override]: https://bazel.build/external/module#single_version_override
 [Slack discussion about library vs executable repositories]: https://bazelbuild.slack.com/archives/C014RARENH0/p1674838476782969
 [WORKSPACE-managed repositories]: https://bazel.build/external/overview#workspace-system
 [bazel_dep]: https://bazel.build/rules/lib/globals#bazel_dep
@@ -216,3 +226,13 @@ reconcile upgrades for Bazel modules that have a `git_override` declaration.
 [the version documentation]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java;l=34-37;bpv=0;bpt=1
 [yanked versions]:https://bazel.build/external/module#yanked_versions
 [Bazel module lockfiles]: https://docs.google.com/document/d/1HPeH_L-lRK54g8A27gv0q7cbk18nwJ-jOq_14XEiZdc/edit#heading=h.5mcn15i0e1ch
+[manager in the renovate framework]: https://github.com/renovatebot/renovate/blob/main/docs/development/adding-a-package-manager.md
+[`bazel` renovate manager]: https://github.com/renovatebot/renovate/blob/main/lib/modules/manager/bazel
+[Starlark language parser]: https://github.com/zharinov/good-enough-parser/blob/main/lib/lang/starlark.ts
+[bazel_dep]: https://bazel.build/rules/lib/globals/module#bazel_dep
+[archive_override]: https://bazel.build/rules/lib/globals/module#archive_override
+[git_override]: https://bazel.build/rules/lib/globals/module#git_override
+[single_version_override]: https://bazel.build/rules/lib/globals/module#single_version_override
+[multiple_version_override]: https://bazel.build/rules/lib/globals/module#multiple_version_override
+[ManagerApi]: https://github.com/renovatebot/renovate/blob/ffbf6e929d6af0b4910942027d09ab971ce43587/lib/modules/manager/types.ts#L228-L267
+[a document related to Bazel]: https://github.com/renovatebot/renovate/blob/main/docs/usage/bazel.md
