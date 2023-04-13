@@ -63,7 +63,7 @@ Together, these values dictate how to identify upgrade candidates for a Bazel mo
 #### Version Implementation
 
 Because none of [the existing Renovate versioning schemes] satisfies the requirements for Bazel
-modules, a new versioning scheme, `bazel_module`, will be implemented. 
+modules, a new versioning scheme, `bazel-module`, will be implemented. 
 
 #### Version Formats
 
@@ -87,7 +87,7 @@ Examples of valid `version` values are listed below:
 #### Version Sorting
 
 To identify whether a release is an upgrade candidate, we need know how to order the version values.
-The `bazel_module` versioning scheme will implement [the same Bazel module version sort] as is
+The `bazel-module` versioning scheme will implement [the same Bazel module version sort] as is
 implemented in Bazel.
 
 #### Version Selection
@@ -151,11 +151,11 @@ prerelease.
 
 ## Implementation Details
 
-### Renovate Versioning: `bazel_module`
+### Renovate Versioning: `bazel-module`
 
-### Renovate Datasource: `bazel_module_registry`
+### Renovate Datasource: `bazel-module-registry`
 
-### Renovate Package Manager: `bazel_module`
+### Renovate Package Manager: `bazel-module`
 
 -->
 
