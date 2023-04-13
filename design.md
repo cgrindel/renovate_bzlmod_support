@@ -2,7 +2,7 @@
 
 ```yaml
 author: Chuck Grindel<chuck.grindel@gmail.com>
-status: To be reviewed
+status: Under review
 created: 2023-04-10
 ```
 
@@ -49,31 +49,120 @@ modules], [Renovate] needs to be modified to support the new external dependency
   - Support different version resolution logic for libraries (i.e., is depended upon by other
     projects) vs executable (i.e., is not depdended upon by other projects) repositories .
 
-<!-- Future Sections
 
 ## Design
 
-The following sections describe 
-
 ### Versioning
 
-#### Parsing and Sorting
+Versioning for Bazel modules has two components: the `version` string and the `compatibility_level`
+integer. The `version` string has two roles. First, it identifies a unique release for a Bazel
+module. Second, it acts as a sort field aiding in the ordering of releases. The
+`compatibility_level` groups releases identifying those which are compatible with each other.
+Together, these values dictate how to identify upgrade candidates for a Bazel module.
 
-#### Resolution: Library vs Executable
+Because none of [the existing Renovate versioning schemes] satisfies the requirements for Bazel
+modules, a new versioning scheme, `bazel-module`, will be implemented. 
 
-[Related Slack discussion](https://bazelbuild.slack.com/archives/C014RARENH0/p1674838476782969)
+#### Version Formats
+
+Bazel modules support a [relaxed SemVer specification]. Specifically, [the version documentation]
+states:
+
+> The version format we support is `RELEASE[-PRERELEASE][+BUILD]`, where `RELEASE`, `PRERELEASE`,
+> and `BUILD` are each a sequence of "identifiers" (defined as a non-empty sequence of ASCII
+> alphanumerical characters and hyphens) separated by dots. The `RELEASE` part may not contain
+> hyphens.
+
+Examples of valid `version` values are listed below:
+
+```sh
+1.2.3                 # SemVer
+7.0.0-pre.20230330.3  # SemVer with prerelease
+1.0+build2            # SemVer with two parts and a build
+20230125.2            # Date-patch format
+```
+
+#### Version Sorting
+
+To identify whether a release is an upgrade candidate, we need know how to order the version values.
+The `bazel-module` versioning scheme will implement [the same Bazel module version sort] as is
+implemented in Bazel.
+
+#### Version Selection
+
+For a given dependency, the Renovate manager will create an upgrade pull request for the highest
+version for a compatibility level. This implies that zero or more pull requests could be created
+depending upon the available versions for a dependency.
+
+To explore the implications of this rule, lets look at some examples. In all of the examples, the
+repository that is using Renovate has a dependency on `rules_foo` at version `1.0.0`. This version
+has a `compatibility_level` value of `1`. Renovate pull requests (PR) will be created for versions
+having a checkmark (✅).
+
+
+##### Example: Single Upgrade Candidate with Same Compatibility Level
+
+| Available Versions | Compatibility Level | PR |
+| ------------------ | ------------------- |:--:|
+| `1.0.0` | `1` | |
+| `1.1.0` | `1` | ✅ |
+
+##### Example: Single Upgrade Candidate with Different Compatibility Level
+
+| Available Versions | Compatibility Level | PR |
+| ------------------ | ------------------- |:--:|
+| `1.0.0` | `1` | |
+| `2.0.0` | `2` | ✅ |
+
+##### Example: Multiple Upgrade Candidates
+
+| Available Versions | Compatibility Level | PR |
+| ------------------ | ------------------- |:--:|
+| `1.0.0` | `1` | | 
+| `1.1.0` | `1` | |
+| `1.1.1` | `1` | ✅ |
+| `2.0.0` | `2` | ✅ |
+
+In this example two pull requests are created. One for compatibility level `1` and the other for
+compatibility level `2`. The `1.1.0` release is ignored because there is a higher version available
+with the same compatibility level (`1.1.1`).
+
+##### Example: Prerelease Versions
+
+| Available Versions | Compatibility Level | PR |
+| ------------------ | ------------------- |:--:|
+| `1.0.0` | `1` | |
+| `1.1.0` | `1` | ✅ |
+| `2.0.0-pre.20230412` | `2` | |
+
+Even though there is a release with compatibility level `2`, it is ignored because it is a
+prerelease.
+
+
+
+
+<!-- Future Sections
+
+#### Upgrade Logic: Library vs Executable
 
 ### New Module Version Detection
 
 ## Implementation Details
 
-### Renovate Versioning: `bazel_module`
+### Renovate Versioning: `bazel-module`
 
-### Renovate Datasource: `bazel_module_registry`
+### Renovate Datasource: `bazel-module-registry`
 
-### Renovate Package Manager: `bazel_module`
+### Renovate Package Manager: `bazel-module`
 
 -->
+
+## References
+
+- [bzlmod Version.java]
+- [bzlmod VersionTest.java]
+- [bzlmod Selection.java]
+- [Slack discussion about library vs executable repositories]
 
 <!-- LINKS -->
 
@@ -85,8 +174,16 @@ The following sections describe
 [Non-registry overrides]: https://bazel.build/external/module#non-registry_overrides
 [Renovate]: https://github.com/renovatebot/renovate
 [Single version override]: https://bazel.build/external/module#single-version_override
+[Slack discussion about library vs executable repositories]: https://bazelbuild.slack.com/archives/C014RARENH0/p1674838476782969
 [WORKSPACE-managed repositories]: https://bazel.build/external/overview#workspace-system
 [bazel_dep]: https://bazel.build/rules/lib/globals#bazel_dep
+[bzlmod Selection.java]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Selection.java
+[bzlmod Version.java]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java
+[bzlmod VersionTest.java]: https://cs.opensource.google/bazel/bazel/+/master:src/test/java/com/google/devtools/build/lib/bazel/bzlmod/VersionTest.java
 [compatibility level]: https://bazel.build/external/module#compatibility_level
 [currently supports]: https://github.com/renovatebot/renovate/tree/main/lib/modules/manager/bazel
+[relaxed SemVer specification]: https://bazel.build/external/module#version_format
+[the existing Renovate versioning schemes]: https://github.com/renovatebot/renovate/tree/main/lib/modules/versioning
+[the same Bazel module version sort]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java
+[the version documentation]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java;l=34-37;bpv=0;bpt=1
 [yanked versions]:https://bazel.build/external/module#yanked_versions
