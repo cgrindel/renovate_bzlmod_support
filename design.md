@@ -138,7 +138,18 @@ with the same compatibility level (`1.1.1`).
 Even though there is a release with compatibility level `2`, it is ignored because it is a
 prerelease.
 
+### Datasource
 
+A [datasource in the renovate framework] encapsulates the retrieval of release information for a
+package. This design introduces a new datasource, `bazel-registry`. It will query a [Bazel registry]
+for the specified module. If it is found, release information for the module will be returned.
+Otherwise, a `null` value will be retured.
+
+The `bazel-registry` datasource will leverage Renovate's [custom registry support] to search across
+[multiple Bazel registries]. It will be configured to use Renovate's `hunt` [registry strategy],
+searching across the configured registry URLs until the named Bazel module is found.
+
+The default versioning scheme will be `bazel-module`, as discussed in earlier in the document.
 
 
 <!-- Future Sections
@@ -163,6 +174,7 @@ prerelease.
 - [bzlmod VersionTest.java]
 - [bzlmod Selection.java]
 - [Slack discussion about library vs executable repositories]
+- [Bazel registries]
 
 <!-- LINKS -->
 
@@ -170,6 +182,7 @@ prerelease.
 [Bazel Central Registry]: https://github.com/bazelbuild/bazel-central-registry
 [Bazel module version formats]: https://bazel.build/external/module#version_format
 [Bazel modules]: https://bazel.build/external/module
+[Bazel registries]: https://bazel.build/external/registry
 [Multiple version override]: https://bazel.build/external/module#multiple-version_override
 [Non-registry overrides]: https://bazel.build/external/module#non-registry_overrides
 [Renovate]: https://github.com/renovatebot/renovate
@@ -182,8 +195,13 @@ prerelease.
 [bzlmod VersionTest.java]: https://cs.opensource.google/bazel/bazel/+/master:src/test/java/com/google/devtools/build/lib/bazel/bzlmod/VersionTest.java
 [compatibility level]: https://bazel.build/external/module#compatibility_level
 [currently supports]: https://github.com/renovatebot/renovate/tree/main/lib/modules/manager/bazel
+[datasource in the renovate framework]: https://github.com/renovatebot/renovate/tree/main/lib/modules/datasource
 [relaxed SemVer specification]: https://bazel.build/external/module#version_format
 [the existing Renovate versioning schemes]: https://github.com/renovatebot/renovate/tree/main/lib/modules/versioning
 [the same Bazel module version sort]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java
 [the version documentation]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java;l=34-37;bpv=0;bpt=1
 [yanked versions]:https://bazel.build/external/module#yanked_versions
+[Bazel registry]: https://bazel.build/external/registry
+[custom registry support]: https://github.com/renovatebot/renovate/blob/main/lib/modules/datasource/types.ts#L95-L98
+[registry strategy]: https://github.com/renovatebot/renovate/blob/main/lib/modules/datasource/types.ts#L87-L93
+[multiple Bazel registries]: https://bazel.build/external/registry#selecting_registries
