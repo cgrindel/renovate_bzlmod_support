@@ -149,7 +149,7 @@ The `bazel-registry` datasource will leverage Renovate's [custom registry suppor
 [multiple Bazel registries]. It will be configured to use Renovate's `hunt` [registry strategy],
 searching across the configured registry URLs until the named Bazel module is found.
 
-The default versioning scheme will be `bazel-module`, as discussed in earlier in the document.
+The default versioning scheme will be `bazel-module`, as discussed earlier in the document.
 
 
 <!-- Future Sections
