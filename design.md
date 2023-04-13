@@ -49,6 +49,10 @@ modules], [Renovate] needs to be modified to support the new external dependency
   - Support different version resolution logic for libraries (i.e., is depended upon by other
     projects) vs executable (i.e., is not depdended upon by other projects) repositories .
 
+### Future Work
+
+- Add support for [Bazel module lockfiles].
+  - As of April 2023, this functionality is scheduled for Bazel 7.0.
 
 ## Design
 
@@ -154,6 +158,9 @@ The default versioning scheme will be `bazel-module`, as discussed earlier in th
 In addition to the `bazel-registry` datasource, the [github-releases datasource] will be used to
 reconcile upgrades for Bazel modules that have a `git_override` declaration.
 
+### Manager
+
+
 <!-- Future Sections
 
 #### Upgrade Logic: Library vs Executable
@@ -208,3 +215,4 @@ reconcile upgrades for Bazel modules that have a `git_override` declaration.
 [the same Bazel module version sort]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java
 [the version documentation]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java;l=34-37;bpv=0;bpt=1
 [yanked versions]:https://bazel.build/external/module#yanked_versions
+[Bazel module lockfiles]: https://docs.google.com/document/d/1HPeH_L-lRK54g8A27gv0q7cbk18nwJ-jOq_14XEiZdc/edit#heading=h.5mcn15i0e1ch
