@@ -176,8 +176,18 @@ will be evaluated for upgrade unless an override declaration for the module is f
 An [archive_override] declaration will prevent any upgrade activity for the module.
 
 A [git_override] declaration describes that the module should come from a specific git commit. If
-this declaration is found, the `version` from the [bazel_dep] will be ignored. The upgrade policy
-that 
+this declaration is found, the `version` from the [bazel_dep] will be ignored. The git commit value
+will be evaluated for upgrade.
+
+A [single_version_override] declaration can override the version and/or the registry for a
+dependency. If one or both of these values are found, they will be used for the upgrade evaluation.
+
+A [multiple_version_override] declaration describes what versions for a previously declared
+dependency can exist after resolution. As such, the version values will not impact the upgrade
+evaluation.
+
+A [local_path_override] declaration will be ignored. Any relevant version upgrades for the original
+[bazel_dep] will processed.
 
 <!-- 
 
@@ -206,17 +216,24 @@ contain information about Bazel module support.
 
 [--registry]: https://bazel.build/reference/command-line-reference#flag--registry
 [Bazel Central Registry]: https://github.com/bazelbuild/bazel-central-registry
+[Bazel module lockfiles]: https://docs.google.com/document/d/1HPeH_L-lRK54g8A27gv0q7cbk18nwJ-jOq_14XEiZdc/edit#heading=h.5mcn15i0e1ch
 [Bazel module version formats]: https://bazel.build/external/module#version_format
 [Bazel modules]: https://bazel.build/external/module
 [Bazel registries]: https://bazel.build/external/registry
 [Bazel registry]: https://bazel.build/external/registry
+[ManagerApi]: https://github.com/renovatebot/renovate/blob/ffbf6e929d6af0b4910942027d09ab971ce43587/lib/modules/manager/types.ts#L228-L267
 [Multiple version override]: https://bazel.build/external/module#multiple_version_override
 [Non-registry overrides]: https://bazel.build/external/module#non-registry_overrides
 [Renovate]: https://github.com/renovatebot/renovate
 [Single version override]: https://bazel.build/external/module#single_version_override
 [Slack discussion about library vs executable repositories]: https://bazelbuild.slack.com/archives/C014RARENH0/p1674838476782969
+[Starlark language parser]: https://github.com/zharinov/good-enough-parser/blob/main/lib/lang/starlark.ts
 [WORKSPACE-managed repositories]: https://bazel.build/external/overview#workspace-system
+[`bazel` renovate manager]: https://github.com/renovatebot/renovate/blob/main/lib/modules/manager/bazel
+[a document related to Bazel]: https://github.com/renovatebot/renovate/blob/main/docs/usage/bazel.md
+[archive_override]: https://bazel.build/rules/lib/globals/module#archive_override
 [bazel_dep]: https://bazel.build/rules/lib/globals#bazel_dep
+[bazel_dep]: https://bazel.build/rules/lib/globals/module#bazel_dep
 [bzlmod Selection.java]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Selection.java
 [bzlmod Version.java]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java
 [bzlmod VersionTest.java]: https://cs.opensource.google/bazel/bazel/+/master:src/test/java/com/google/devtools/build/lib/bazel/bzlmod/VersionTest.java
@@ -224,22 +241,16 @@ contain information about Bazel module support.
 [currently supports]: https://github.com/renovatebot/renovate/tree/main/lib/modules/manager/bazel
 [custom registry support]: https://github.com/renovatebot/renovate/blob/main/lib/modules/datasource/types.ts#L95-L98
 [datasource in the renovate framework]: https://github.com/renovatebot/renovate/tree/main/lib/modules/datasource
+[git_override]: https://bazel.build/rules/lib/globals/module#git_override
 [github-releases datasource]: https://github.com/renovatebot/renovate/blob/ffbf6e929d6af0b4910942027d09ab971ce43587/lib/modules/datasource/github-releases/index.ts
+[local_path_override]: https://bazel.build/rules/lib/globals/module#local_path_override
+[manager in the renovate framework]: https://github.com/renovatebot/renovate/blob/main/docs/development/adding-a-package-manager.md
 [multiple Bazel registries]: https://bazel.build/external/registry#selecting_registries
+[multiple_version_override]: https://bazel.build/rules/lib/globals/module#multiple_version_override
 [registry strategy]: https://github.com/renovatebot/renovate/blob/main/lib/modules/datasource/types.ts#L87-L93
 [relaxed SemVer specification]: https://bazel.build/external/module#version_format
+[single_version_override]: https://bazel.build/rules/lib/globals/module#single_version_override
 [the existing Renovate versioning schemes]: https://github.com/renovatebot/renovate/tree/main/lib/modules/versioning
 [the same Bazel module version sort]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java
 [the version documentation]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java;l=34-37;bpv=0;bpt=1
 [yanked versions]:https://bazel.build/external/module#yanked_versions
-[Bazel module lockfiles]: https://docs.google.com/document/d/1HPeH_L-lRK54g8A27gv0q7cbk18nwJ-jOq_14XEiZdc/edit#heading=h.5mcn15i0e1ch
-[manager in the renovate framework]: https://github.com/renovatebot/renovate/blob/main/docs/development/adding-a-package-manager.md
-[`bazel` renovate manager]: https://github.com/renovatebot/renovate/blob/main/lib/modules/manager/bazel
-[Starlark language parser]: https://github.com/zharinov/good-enough-parser/blob/main/lib/lang/starlark.ts
-[bazel_dep]: https://bazel.build/rules/lib/globals/module#bazel_dep
-[archive_override]: https://bazel.build/rules/lib/globals/module#archive_override
-[git_override]: https://bazel.build/rules/lib/globals/module#git_override
-[single_version_override]: https://bazel.build/rules/lib/globals/module#single_version_override
-[multiple_version_override]: https://bazel.build/rules/lib/globals/module#multiple_version_override
-[ManagerApi]: https://github.com/renovatebot/renovate/blob/ffbf6e929d6af0b4910942027d09ab971ce43587/lib/modules/manager/types.ts#L228-L267
-[a document related to Bazel]: https://github.com/renovatebot/renovate/blob/main/docs/usage/bazel.md
