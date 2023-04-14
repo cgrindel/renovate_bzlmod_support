@@ -189,6 +189,11 @@ evaluation.
 A [local_path_override] declaration will be ignored. Any relevant version upgrades for the original
 [bazel_dep] will processed.
 
+#### Dependency Update
+
+_NOTE: I have [questions out] to the Renovate community looking for advice on when to implement any of
+[the optional update functions for a manager]._
+
 <!-- 
 
 > TODO (grindel): Use [getRangeStrategy](https://github.com/renovatebot/renovate/blob/main/docs/development/adding-a-package-manager.md#getrangestrategyconfig-optional)
@@ -247,10 +252,12 @@ contain information about Bazel module support.
 [manager in the renovate framework]: https://github.com/renovatebot/renovate/blob/main/docs/development/adding-a-package-manager.md
 [multiple Bazel registries]: https://bazel.build/external/registry#selecting_registries
 [multiple_version_override]: https://bazel.build/rules/lib/globals/module#multiple_version_override
+[questions out]: https://renovatebot.slack.com/archives/CAFH752JU/p1681484240604959
 [registry strategy]: https://github.com/renovatebot/renovate/blob/main/lib/modules/datasource/types.ts#L87-L93
 [relaxed SemVer specification]: https://bazel.build/external/module#version_format
 [single_version_override]: https://bazel.build/rules/lib/globals/module#single_version_override
 [the existing Renovate versioning schemes]: https://github.com/renovatebot/renovate/tree/main/lib/modules/versioning
+[the optional update functions for a manager]: https://github.com/renovatebot/renovate/blob/ffbf6e929d6af0b4910942027d09ab971ce43587/lib/modules/manager/types.ts#L256-L266
 [the same Bazel module version sort]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java
 [the version documentation]: https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/bazel/bzlmod/Version.java;l=34-37;bpv=0;bpt=1
 [yanked versions]:https://bazel.build/external/module#yanked_versions
