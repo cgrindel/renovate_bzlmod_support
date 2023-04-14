@@ -6,6 +6,29 @@ status: Under review
 created: 2023-04-10
 ```
 
+## Contents
+
+* [Abstract](#abstract)
+* [Requirements](#requirements)
+  * [Requirements Still Under Discussion](#requirements-still-under-discussion)
+  * [Future Work](#future-work)
+* [Design](#design)
+  * [Versioning](#versioning)
+    * [Version Formats](#version-formats)
+    * [Version Sorting](#version-sorting)
+    * [Version Selection](#version-selection)
+      * [Example: Single Upgrade Candidate with Same Compatibility Level](#example-single-upgrade-candidate-with-same-compatibility-level)
+      * [Example: Single Upgrade Candidate with Different Compatibility Level](#example-single-upgrade-candidate-with-different-compatibility-level)
+      * [Example: Multiple Upgrade Candidates](#example-multiple-upgrade-candidates)
+      * [Example: Prerelease Versions](#example-prerelease-versions)
+  * [Datasource](#datasource)
+  * [Manager](#manager)
+    * [Extract](#extract)
+    * [Dependency Update](#dependency-update)
+  * [Other Changes](#other-changes)
+    * [Update the Renovate Bazel Documentation](#update-the-renovate-bazel-documentation)
+* [References](#references)
+
 ## Abstract
 
 [Renovate] is a popular service for updating external dependencies. It [currently supports] updating
