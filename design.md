@@ -151,6 +151,8 @@ searching across the configured registry URLs until the named Bazel module is fo
 
 The default versioning scheme will be `bazel-module`, as discussed earlier in the document.
 
+In addition to the `bazel-registry` datasource, the [github-releases datasource] will be used to
+reconcile upgrades for Bazel modules that have a `git_override` declaration.
 
 <!-- Future Sections
 
@@ -198,6 +200,7 @@ The default versioning scheme will be `bazel-module`, as discussed earlier in th
 [currently supports]: https://github.com/renovatebot/renovate/tree/main/lib/modules/manager/bazel
 [custom registry support]: https://github.com/renovatebot/renovate/blob/main/lib/modules/datasource/types.ts#L95-L98
 [datasource in the renovate framework]: https://github.com/renovatebot/renovate/tree/main/lib/modules/datasource
+[github-releases datasource]: https://github.com/renovatebot/renovate/blob/ffbf6e929d6af0b4910942027d09ab971ce43587/lib/modules/datasource/github-releases/index.ts
 [multiple Bazel registries]: https://bazel.build/external/registry#selecting_registries
 [registry strategy]: https://github.com/renovatebot/renovate/blob/main/lib/modules/datasource/types.ts#L87-L93
 [relaxed SemVer specification]: https://bazel.build/external/module#version_format
