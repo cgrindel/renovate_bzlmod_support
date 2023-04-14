@@ -165,12 +165,19 @@ repository files. This design introduces a manager, `bazel-module`, for processi
 dependencies. Like the [`bazel` renovate manager], the `good-enough-parser`'s [Starlark language
 parser] will be used to parse a repository's `MODULE.bazel` file.
 
+#### Extract
+
 The `bazel-module` manager will detect and process [bazel_dep], [archive_override], [git_override],
 [single_version_override], and [multiple_version_override].
 
-#### 
+A [bazel_dep] declaration describes a dependent module at a specified version. The version value
+will be evaluated for upgrade unless an override declaration for the module is found.
 
-Any [bazel_dep] entry in a `MODULE.bazel` will be added to the list 
+An [archive_override] declaration will prevent any upgrade activity for the module.
+
+A [git_override] declaration describes that the module should come from a specific git commit. If
+this declaration is found, the `version` from the [bazel_dep] will be ignored. The upgrade policy
+that 
 
 <!-- 
 
